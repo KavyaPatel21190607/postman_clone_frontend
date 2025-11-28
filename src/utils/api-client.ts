@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://postman-clone-backend-2ru3.onrender.com',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -44,3 +44,4 @@ export const dataApi = {
 };
 
 export default api;
+
