@@ -45,4 +45,10 @@ export const dataApi = {
     proxy: (payload: any) => api.post('/proxy', payload, { validateStatus: () => true }),
 };
 
+export const debugApi = {
+    echo: (payload: any) => api.post('/debug/echo', payload, { validateStatus: () => true }),
+    // Unprotected proxy debug (if you add an unprotected route) — kept for future use
+    proxyUnprotected: (payload: any) => api.post('/debug/proxy', payload, { validateStatus: () => true }),
+};
+
 export default api;
