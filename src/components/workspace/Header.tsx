@@ -1,6 +1,7 @@
 import { useAuth } from '../../contexts/AuthContext';
 import { Menu, LogOut, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { debugApi } from '../../utils/api-client';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -66,6 +67,30 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
               title="Logout"
             >
               <LogOut className="w-5 h-5 text-red-600 dark:text-red-400" />
+            </button>
+            <button
+              onClick={async () => {
+                try {
+                  const res = await debugApi.echo({ now: Date.now() });
+                  // show a quick feedback
+                  // eslint-disable-next-line no-alert
+                  alert('Debug echo OK — check console for details');
+                  console.log('[DEBUG ECHO]', res.data);
+                } catch (err) {
+                  // eslint-disable-next-line no-alert
+                  alert('Debug echo failed — see console');
+                  console.error('[DEBUG ECHO ERROR]', err);
+                }
+              }}
+              className="ml-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              title="Test API connectivity"
+            >
+              <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 2v4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M21 12h-4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M12 22v-4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3 12h4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
           </div>
         </div>
