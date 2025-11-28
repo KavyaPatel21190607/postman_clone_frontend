@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useData } from '../../contexts/DataContext';
+import { dataApi } from '../../utils/api-client';
 import { Send, Plus, Trash2 } from 'lucide-react';
 import type { KeyValue } from '../../contexts/DataContext';
 
@@ -55,20 +56,13 @@ export default function RequestBuilder({ onResponse }: RequestBuilderProps) {
         .filter((h) => h.enabled && h.key)
         .reduce((acc, h) => ({ ...acc, [h.key]: h.value }), {} as Record<string, string>);
 
-      // Use the proxy endpoint
-      // We import api from utils/api-client to handle our backend auth
-      const { data } = await import('../../utils/api-client').then(m =>
-        m.default.post(
-          '/proxy',
-          {
-            url,
-            method: currentRequest.method,
-            headers: enabledHeaders,
-            body: ['POST', 'PUT', 'PATCH'].includes(currentRequest.method) ? currentRequest.body : undefined,
-          },
-          { validateStatus: () => true }
-        )
-      );
+      // Use the proxy endpoint via dataApi helper which uses the shared axios instance
+      const { data } = await dataApi.proxy({
+        url,
+        method: currentRequest.method,
+        headers: enabledHeaders,
+        body: ['POST', 'PUT', 'PATCH'].includes(currentRequest.method) ? currentRequest.body : undefined,
+      });
 
       const responseTime = Date.now() - startTime;
 
