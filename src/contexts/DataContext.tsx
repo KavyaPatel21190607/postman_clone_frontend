@@ -69,6 +69,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   // Load data from API
   useEffect(() => {
+    // Clear state immediately when user changes (including logout)
+    setHistory([]);
+    setCollections([]);
+    setCurrentRequest(defaultRequest);
+
     if (user) {
       const fetchData = async () => {
         try {
@@ -102,9 +107,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
       };
 
       fetchData();
-    } else {
-      setHistory([]);
-      setCollections([]);
     }
   }, [user]);
 
